@@ -1,7 +1,10 @@
 CFLAGS=-Wall -g
-programs=ex1 ex3 bitwise ex7 ex10 ex11
+src=$(shell ls *.c)
+programs=$(src:.c=)
+debug_info := $(patsubst %,%.dSYM,$(programs))
 
 all: $(programs)
 
 clean:
 	rm -f $(programs)
+	rm -rf $(debug_info)
