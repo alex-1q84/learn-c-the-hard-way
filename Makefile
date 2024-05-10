@@ -5,6 +5,10 @@ debug_info := $(patsubst %,%.dSYM,$(programs))
 
 all: $(programs)
 
+checkpoint:
+	git add *.c
+	git commit -m "$(shell date +%Y%m%d%H%M%S)"
+
 clean:
 	rm -f $(programs)
 	rm -rf $(debug_info)
