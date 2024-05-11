@@ -1,7 +1,7 @@
-#include <stdio.h>
-#include <assert.h>
-#include <stdlib.h>
-#include <string.h>
+#include <stdio.h> // for print out
+#include <assert.h> // assertion
+#include <stdlib.h> // using malloc free functions
+#include <string.h> // using string operation functions such as strdup
 
 struct Person {
     char *name;
@@ -10,12 +10,12 @@ struct Person {
     int weight;
 };
 
-struct Person *person_create(char *name, int age, int height, int weight)
+struct Person *Person_create(char *name, int age, int height, int weight)
 {
     struct Person *who = malloc(sizeof(struct Person));
     assert(who != NULL);
 
-    who->name = strdup(name);
+    who->name = strdup(name); // copy the string into the structure own reference to make sure it actually own it
     who->age = age;
     who->height = height;
     who->weight = weight;
@@ -23,15 +23,15 @@ struct Person *person_create(char *name, int age, int height, int weight)
     return who;
 }
 
-void person_destroy(struct Person *who)
+void Person_destroy(struct Person *who)
 {
     assert(who != NULL);
-
+    /* first free children then free parent */
     free(who->name);
     free(who);
 }
 
-void person_print(struct Person *who)
+void Person_print(struct Person *who)
 {
     assert(who != NULL);
 
@@ -44,28 +44,27 @@ void person_print(struct Person *who)
 int main(int argc, char *argv[])
 {
     // make two people structures
-    struct Person *joe = person_create("Joe Alex", 32, 64, 140);
+    struct Person *joe = Person_create("Joe Alex", 32, 64, 140);
 
-    struct Person *frank = person_create("Frank Blank", 20, 72, 180);
+    struct Person *frank = Person_create("Frank Blank", 20, 72, 180);
 
     // print them out and where they are in memory
     printf("joe is at memory location %p:\n", joe);
-    person_print(joe);
+    Person_print(joe);
 
     printf("frank is at memory location %p:\n", frank);
-    person_print(frank);
+    Person_print(frank);
 
     // make everyone age 20 years and print them again
     joe->age += 20;
     joe->height -= 2;
     joe->weight += 40;
-    person_print(joe);
+    Person_print(joe);
 
     frank->age += 20;
     frank->weight += 20;
-    person_print(frank);
+    Person_print(frank);
 
     // destroy both them so we clean up
-    person_destroy(joe);
-    person_destroy(frank);
+    Person_destroy(joe);
 }
