@@ -7,15 +7,16 @@
 #define MAX_DATA 512
 #define MAX_ROWS 100
 
+// fixed sized struct make it easy to write and read
 struct Address{
     int id;
     int set;
-    char name[MAX_DATA];
+    char name[MAX_DATA]; // fixed sized string
     char email[MAX_DATA];
 };
 
 struct Database {
-    struct Address rows[MAX_ROWS];
+    struct Address rows[MAX_ROWS]; // fixed sized structure array
 };
 
 struct Connection {
@@ -50,7 +51,7 @@ void Database_load(struct Connection *conn)
 struct Connection *Database_open(const char *filename, char mode)
 {
     struct Connection *conn = malloc(sizeof(struct Connection));
-    if (!conn) {
+    if (!conn) { // simply test is a pointer NULL
         die("Memory error");
     }
 
@@ -119,6 +120,11 @@ void Database_create(struct Connection *conn)
 
 void Database_set(struct Connection *conn, int id, const char *name, const char *email)
 {
+    /* &conn->db->rows[id] read as
+     * get the id element of rows,
+     * which is in db, which is in conn,
+     * then get the address of (&) it.
+     */
     struct Address *addr = &conn->db->rows[id];
     if(addr->set){
         die("Already set, delete it first");
@@ -150,7 +156,9 @@ void Database_get(struct Connection *conn, int id)
 
 void Database_delete(struct Connection *conn, int id)
 {
-    struct Address addr = {.id = id, .set = 0};
+    struct Address addr = {.id = id, .set = 0}; // create a structure on stack
+    //copy the struct into rows[id] by assgin
+    // this is effect because on stack variable passed as value
     conn->db->rows[id] = addr;
 }
 
