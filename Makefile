@@ -7,6 +7,7 @@ all: $(programs)
 
 checkpoint:
 	git add *.c
+	git add .gitignore Makefile
 	git commit -m "$(shell date +%Y%m%d%H%M%S)"
 
 clean:
