@@ -1,4 +1,8 @@
 #lang racket/base
+
+;;; Update the .gitignore file with the list of C file builds
+;;; in the current directory.
+
 (require racket/file
          racket/string
          threading)
