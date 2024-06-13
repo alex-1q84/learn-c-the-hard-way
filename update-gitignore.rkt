@@ -1,6 +1,5 @@
 #lang racket/base
-(require racket/runtime-path
-         racket/file
+(require racket/file
          racket/string
          threading)
 
