@@ -2,6 +2,7 @@
 *.db
 .vscode
 *.o
+*.so
 
 #project builds
 bitwise

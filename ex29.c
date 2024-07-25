@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
 
 
     lib_function func = dlsym(lib, func_to_run);
-    check(func 1= NULL,
+    check(func != NULL,
           "Did not find %s function in the library %s: %s", func_to_run,
           lib_file, dlerror());
 
