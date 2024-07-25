@@ -3,6 +3,8 @@ src=$(shell ls *.c)
 programs=$(src:.c=)
 debug_info := $(patsubst %,%.dSYM,$(programs))
 
+.PHONY: all update_gitignore checkpoint clean
+
 all: $(programs)
 
 update_gitignore:
