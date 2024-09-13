@@ -3,6 +3,10 @@
 .vscode
 *.o
 *.so
+so
+build
+*.log
+.#*
 
 #project builds
 bitwise
