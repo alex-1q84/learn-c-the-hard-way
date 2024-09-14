@@ -14,7 +14,7 @@ checkpoint: update_gitignore
 	git add *.rkt
 	git add *.c *.h
 	git add **/*.c **/*.h
-	git add .gitignore Makefile *.sh
+	git add .gitignore Makefile *.sh **/Makefile **/*.sh
 	git commit -m "$(shell date +%Y%m%d%H%M%S)"
 
 clean:

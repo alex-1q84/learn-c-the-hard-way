@@ -128,3 +128,62 @@ void *List_remove(List * list, ListNode * node)
 error:
     return result;
 }
+
+List *List_copy(List * list)
+{
+    if (!list) {
+        return NULL;
+    }
+
+    List *new_list = List_create();
+    check_mem(new_list);
+    LIST_FOREACH(list, first, next, cur) {
+        ListNode *node = calloc(1, sizeof(ListNode));
+        check_mem(node);
+        node->value = cur->value;
+
+        if (new_list->first == NULL) {
+            new_list->first = node;
+            new_list->last = node;
+        } else {
+            new_list->last->next = node;
+            node->prev = new_list->last;
+            new_list->last = node;
+        }
+
+        new_list->count++;
+    }
+
+    return new_list;
+error:
+    List_destroy(new_list);
+    return NULL;
+}
+
+int List_split(List * list, ListNode *split_at, List * a_list, List * b_list)
+{
+    if (list == NULL || list->first == NULL || split_at == NULL) {
+        return -1;
+    }
+
+    int a_list_count = 0;
+    LIST_FOREACH(list, first, next,  cur) {
+        if (cur == split_at) {
+            break;
+        }
+        a_list_count++;
+    }
+
+    List_clear(a_list);
+    List_clear(b_list);
+
+    a_list->first = list->first;
+    a_list->last = split_at->prev;
+    a_list->count = a_list_count;
+
+    b_list->first = split_at;
+    b_list->last = list->last;
+    b_list->count = List_count(list) - a_list_count;
+
+    return 0;
+}
