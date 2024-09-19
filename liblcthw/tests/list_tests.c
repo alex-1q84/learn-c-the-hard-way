@@ -125,6 +125,39 @@ char *test_split()
     return NULL;
 }
 
+char *test_join()
+{
+    List *alist = List_create();
+    List *blist = List_create();
+
+    mu_assert(blist == List_join(NULL, blist), "should be blist");
+    mu_assert(alist == List_join(alist, NULL), "should be alist");
+
+    char *a1 = "a1";
+    char *a2 = "a2";
+
+    List_push(alist, a1);
+    mu_assert(alist == List_join(alist, blist), "should be alist");
+
+    List_pop(alist);
+    List_push(blist, a2);
+    mu_assert(blist == List_join(alist, blist), "should be blist");
+
+    List_push(alist, a1);
+    mu_assert(alist == List_join(alist, blist), "should be alist");
+    mu_assert(List_count(alist) == 2, "Wrong count of join list");
+    mu_assert(List_first(alist) == a1, "Wrong value of first item of join list");
+    mu_assert(List_last(alist) == a2, "Wrong value of last item of join list");
+    //check blist status after join
+    mu_assert(List_count(blist) == 0, "Wrong count of blist");
+    mu_assert(List_first(blist) == NULL, "Wrong value of first itme of blist");
+
+    List_destroy(alist);
+    List_destroy(blist);
+
+    return NULL;
+}
+
 char *all_tests()
 {
     mu_suite_start();
@@ -136,6 +169,7 @@ char *all_tests()
     mu_run_test(test_split);
     mu_run_test(test_remove);
     mu_run_test(test_shift);
+    mu_run_test(test_join);
     mu_run_test(test_destroy);
 
     return NULL;

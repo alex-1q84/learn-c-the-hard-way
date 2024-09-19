@@ -187,3 +187,22 @@ int List_split(List * list, ListNode *split_at, List * a_list, List * b_list)
 
     return 0;
 }
+
+List *List_join(List * alist, List * blist)
+{
+    if (alist == NULL) return blist;
+    if (blist == NULL) return alist;
+    if (alist->first == NULL) return blist;
+    if (blist->first == NULL) return alist;
+
+    alist->last->next = blist->first;
+    blist->first->prev = alist->last;
+    alist->last = blist->last;
+    alist->count += blist->count;
+
+    blist->first = NULL;
+    blist->last = NULL;
+    blist->count = 0;
+
+    return alist;
+}
