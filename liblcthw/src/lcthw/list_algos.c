@@ -9,28 +9,27 @@ int List_bubble_sort(List * list, List_compare f_compare)
     while(swapped != 0) {
         swapped = 0;
         LIST_FOREACH(list, first, next, cur) {
+            ListNode *prev_node = cur->prev;
             ListNode *next_node = cur->next;
+
             if(next_node != NULL) {
                 //compare and swap
                 if (f_compare(cur->value, cur->next->value) > 0) {
                     //swap
                     if (list->first == cur) {
                         list->first = next_node;
-                        next_node->prev = NULL;
                     } else {
-                        ListNode *prev_node = cur->prev;
                         prev_node->next = next_node;
-                        next_node->prev = prev_node;
                     }
 
                     if (next_node == list->last) {
                         list->last = cur;
-                        cur->next = NULL;
                     } else {
                         next_node->next->prev = cur;
-                        cur->next = next_node->next;
                     }
 
+                    next_node->prev = prev_node;
+                    cur->next = next_node->next;
                     next_node->next = cur;
                     cur->prev = next_node;
 
