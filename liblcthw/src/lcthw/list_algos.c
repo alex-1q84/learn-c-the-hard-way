@@ -2,6 +2,13 @@
 #include <lcthw/list.h>
 #include <lcthw/dbg.h>
 
+inline void List_swap(ListNode *a, ListNode *b)
+{
+    void *temp = a->value;
+    a->value = b->value;
+    b->value = temp;
+}
+
 int List_bubble_sort(List * list, List_compare f_compare)
 {
     if (list == NULL || f_compare == NULL) return 1;
@@ -10,30 +17,11 @@ int List_bubble_sort(List * list, List_compare f_compare)
     while(swapped != 0) {
         swapped = 0;
         LIST_FOREACH(list, first, next, cur) {
-            ListNode *prev_node = cur->prev;
-            ListNode *next_node = cur->next;
-
-            if(next_node != NULL) {
+            if(cur->next != NULL) {
                 //compare and swap
                 if (f_compare(cur->value, cur->next->value) > 0) {
-                    //swap
-                    if (list->first == cur) {
-                        list->first = next_node;
-                    } else {
-                        prev_node->next = next_node;
-                    }
-
-                    if (next_node == list->last) {
-                        list->last = cur;
-                    } else {
-                        next_node->next->prev = cur;
-                    }
-
-                    next_node->prev = prev_node;
-                    cur->next = next_node->next;
-                    next_node->next = cur;
-                    cur->prev = next_node;
-
+                    // 不交换节点自身，只交换节点值，节点位置不变，非常简洁
+                    List_swap(cur, cur->next);
                     swapped = 1;
                 }
             }
