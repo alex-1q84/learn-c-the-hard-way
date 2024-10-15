@@ -31,44 +31,6 @@ int List_bubble_sort(List * list, List_compare f_compare)
     return 0;
 }
 
-List *merge(List * left, List * right, List_compare f_compare);
-
-List *List_merge_sort(List * list, List_compare f_compare)
-{
-    if (list == NULL || List_count(list) <= 1) return list;
-
-    List *left = List_create();
-    check_mem(left);
-    List *right = List_create();
-    check_mem(right);
-
-    int middle = List_count(list)/2;
-    int i = 0;
-    LIST_FOREACH(list, first, next, cur) {
-        if (i < middle) {
-            List_push(left, cur->value);
-        } else {
-            List_push(right, cur->value);
-        }
-        i++;
-    }
-
-    List *sorted_left = List_merge_sort(left, f_compare);
-    List *sorted_right = List_merge_sort(right, f_compare);
-    
-    List *result = merge(sorted_left, sorted_right, f_compare);
-
-    List_destroy(left);
-    List_destroy(right);
-
-    return result;
-
-error:
-    if (left) List_destroy(left);
-    if (right) List_destroy(right);
-    return NULL;
-}
-
 List *merge(List * left, List * right, List_compare f_compare)
 {
     List * result = List_create();
@@ -101,5 +63,41 @@ List *merge(List * left, List * right, List_compare f_compare)
 
 error:
     if (result) List_destroy(result);
+    return NULL;
+}
+
+List *List_merge_sort(List * list, List_compare f_compare)
+{
+    if (list == NULL || List_count(list) <= 1) return list;
+
+    List *left = List_create();
+    check_mem(left);
+    List *right = List_create();
+    check_mem(right);
+
+    int middle = List_count(list)/2;
+    int i = 0;
+    LIST_FOREACH(list, first, next, cur) {
+        if (i < middle) {
+            List_push(left, cur->value);
+        } else {
+            List_push(right, cur->value);
+        }
+        i++;
+    }
+
+    List *sorted_left = List_merge_sort(left, f_compare);
+    List *sorted_right = List_merge_sort(right, f_compare);
+    
+    List *result = merge(sorted_left, sorted_right, f_compare);
+
+    if(left != sorted_left) List_destroy(left);
+    if(right != sorted_right) List_destroy(right);
+
+    return result;
+
+error:
+    if (left != sorted_left) List_destroy(left);
+    if (right != sorted_right) List_destroy(right);
     return NULL;
 }
